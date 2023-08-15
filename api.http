@@ -1,0 +1,23 @@
+###
+GET http://localhost:3000/plan/3
+
+
+###
+POST http://localhost:3000/plan
+Content-Type: application/json
+Authorization: 5f856f38-d60a-4d19-9041-168ab64dd817
+
+{
+  "title":  "fix street",
+  "description": "fix all street in town"
+}
+
+
+###
+POST http://localhost:3000/login
+Content-Type: application/json
+
+{
+    "username": "admin",
+    "password": "admin"
+}
