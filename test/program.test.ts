@@ -1,34 +1,16 @@
 import request from 'supertest';
 import { app } from '../src/api';
-import { User } from '../src/model/entity';
 import { canCreateProgram } from '../src/controller/program/create-program';
+import { createPlanTest ,loginUserTest } from './utility';
 
 describe('Program', () => {
-    const loginUsetTest = async (user:string,pass:string) => {
-        const response = await request(app)
-            .post("/login")
-            .send({ username: user, password: user })
-            .expect(200);
-        return response.body;
-    }
-    const createPlanTest = async (user: User,title:any,status:number,deadline:Date) => {
-        const plan = await request(app)
-            .post("/plan")
-            .set("Authorization", user.id)
-            .send({
-                title: title,
-                description: "trip free to Bandar Abbas",
-                deadline: new Date(deadline)
-            })
-            .expect(status);
-            return plan
-    }
+
     describe('create program', () => {
         it.skip('should be faild if did not logged in', async () => {
             await request(app).post('/program').expect(400);
         });
         it('should be success if logged in', async () => {
-            const userResponse: any = await loginUsetTest("admin","admin");
+            const userResponse: any = await loginUserTest("rep","rep");
             const todate = new Date();
             const tomarow = new Date(todate.setDate(todate.getDate() + 1));
             const plan = await createPlanTest(userResponse,'Bandar Abbas',200,tomarow);
@@ -47,7 +29,7 @@ describe('Program', () => {
         });
 
         it.skip('should be faild if title is empty', async () => {
-            const userResponse: any = await loginUsetTest("rep","rep");
+            const userResponse: any = await loginUserTest("rep","rep");
             const todate = new Date();
             const tomarow = new Date(todate.setDate(todate.getDate() + 1));
             const plan = await createPlanTest(userResponse,'Bandar Abbas',200,tomarow);
@@ -64,7 +46,7 @@ describe('Program', () => {
         }
         );
         it.skip('should be faild if deadline is empty', async () => {
-            const userResponse: any = await loginUsetTest("rep","rep");
+            const userResponse: any = await loginUserTest("rep","rep");
             const todate = new Date();
             const tomarow = new Date(todate.setDate(todate.getDate() + 1));
             const plan = await createPlanTest(userResponse,'Bandar Abbas',200,tomarow);
@@ -81,7 +63,7 @@ describe('Program', () => {
         }
         );
         it.skip('should be faild if deadline is undefined', async () => {
-            const userResponse: any = await loginUsetTest("rep","rep");
+            const userResponse: any = await loginUserTest("rep","rep");
             const todate = new Date();
             const tomarow = new Date(todate.setDate(todate.getDate() + 1));
             const plan = await createPlanTest(userResponse,'Bandar Abbas',200,tomarow);
@@ -98,7 +80,7 @@ describe('Program', () => {
         }
         );
         it.skip('should be faild if deadline is null', async () => {
-            const userResponse: any = await loginUsetTest("rep","rep");
+            const userResponse: any = await loginUserTest("rep","rep");
             const todate = new Date();
             const tomarow = new Date(todate.setDate(todate.getDate() + 1));
             const plan = await createPlanTest(userResponse,'Bandar Abbas',200,tomarow);
@@ -115,7 +97,7 @@ describe('Program', () => {
         }
         );
         it.skip('should be success if deadline is valid', async () => {
-            const userResponse: any = await loginUsetTest("rep","rep");
+            const userResponse: any = await loginUserTest("rep","rep");
             const todate = new Date();
             const tomarow = new Date(todate.setDate(todate.getDate() + 2));
             const plan = await createPlanTest(userResponse,'Bandar Abbas',200,tomarow);
@@ -134,7 +116,7 @@ describe('Program', () => {
         }
         );
         it.skip('should be faild if deadline is exeeded', async () => {
-            const userResponse: any = await loginUsetTest("rep","rep");
+            const userResponse: any = await loginUserTest("rep","rep");
             const today = new Date();
             const yesterday = new Date(today.setDate(today.getDate() - 1));
             const plan = await createPlanTest(userResponse,'Bandar Abbas',400,yesterday);

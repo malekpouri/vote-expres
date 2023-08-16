@@ -18,7 +18,6 @@ router.post("/",loginMidalware, (req, res, next) => {
     res.status(403).send({ message: "forbidden" });
     return;
   }
-  //  const dto:{title:string , description:string , deadline:Date} = req.body;
   try {
     const dto = createPlanDto.parse(req.body);
     const plan = createPlan(dto);

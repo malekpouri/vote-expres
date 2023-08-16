@@ -1,7 +1,7 @@
 import request from "supertest";
 import { app } from "../src/api";
 
-describe.skip("User", () => {
+describe("User", () => {
   describe("login", () => {
     it("should be faild if user is empty", async () => {
       await request(app)

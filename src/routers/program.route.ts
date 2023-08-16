@@ -1,11 +1,8 @@
 import { Router } from "express";
-import { Program, User } from "../model/entity";
-import { users } from "./login.route";
-import { createProgramDto } from "../controller/program/dto/create-program-dto";
-import { createProgram } from "../controller/program/create-program";
 import { z } from "zod";
-import { ForbiddenError } from "../errors/http-error";
-import { log } from "console";
+import { createProgram } from "../controller/program/create-program";
+import { createProgramDto } from "../controller/program/dto/create-program-dto";
+import { Program } from "../model/entity";
 import { handleExpress } from "../utility/handleExpress";
 import { loginMidalware } from "../utility/login.midalware";
 
