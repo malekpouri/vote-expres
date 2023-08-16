@@ -6,19 +6,15 @@ import { createPlanDto } from "../controller/plan/dto/create-plan-dto";
 import { z } from "zod";
 import { handleExpress } from "../utility/handleExpress";
 import { getPlanById } from "../controller/plan/getplan-byId";
+import { loginMidalware } from "../utility/login.midalware";
 
 export const router = Router();
 
 export const plans: Plan[] = [];
 
-router.post("/", (req, res, next) => {
-  const userId = req.headers.authorization;
-  const loggedUser = users.find((user) => user.id === userId);
-  if (!loggedUser || loggedUser === undefined) {
-    res.status(401).send({ message: "unauthorized" });
-    return;
-  }
-  if (loggedUser.role !== "Admin") {
+router.post("/",loginMidalware, (req, res, next) => {
+ 
+  if (req.user.role !== "Admin") {
     res.status(403).send({ message: "forbidden" });
     return;
   }

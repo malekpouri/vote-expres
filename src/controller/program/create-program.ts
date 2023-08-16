@@ -1,45 +1,43 @@
-import { ForbiddenError, NotfoundError } from "../../errors/http-error";
-import { Plan, Program, User } from "../../model/entity";
-import { users } from "../../routers/login.route";
+import { log } from "console";
+import {
+  ForbiddenError,
+  NotfoundError,
+  httpError,
+} from "../../errors/http-error";
+import { Plan, User } from "../../model/entity";
 import { plans } from "../../routers/plan.route";
 import { programs } from "../../routers/program.route";
+import { CreateProgramDto } from "./dto/create-program-dto";
 
-export const createProgram = (
-  dto: {
-    title: string;
-    description?: string;
-    deadline: Date;
-    planId: number;
-    userId: string;
-  },
-  loggedUser?: User
-) => {
+export const createProgram = (dto: CreateProgramDto, loggedUser: User) => {
   const plan = plans.find((plan) => plan.id === dto.planId);
   if (!plan || plan === undefined) {
     throw new NotfoundError();
   }
-  const user = users.find((user) => user.id === dto.userId);
-  if (canCreateProgram(user, plan)) {
-    const newProgram: Program = {
+  if (canCreateProgram(loggedUser, plan)) {
+    plan.programs.push({
       id: programs.length + 1,
       title: dto.title,
       description: dto.description || "",
       deadline: dto.deadline,
-      planId: dto.planId,
-      userId: dto.userId,
-    };
-    programs.push(newProgram);
-    return newProgram;
+      planId: plan.id,
+      userId: loggedUser.id,
+    });
+  } else {
+    throw new httpError("you can not create program", 400);
   }
 };
 
-export const canCreateProgram = (loggedUser: User, plan: Plan): boolean => {
-  if (!loggedUser || loggedUser.role !== "Representative") {
+export const canCreateProgram = (user: User, plan: Plan): boolean => {
+  if (!user || user.role !== "Representative") {
     throw new ForbiddenError();
   }
-  const program = programs.find((program) => program.planId === plan.id);
+  const program = plan.programs.find((program) => program.userId === user.id);
   if (program) {
-    throw new NotfoundError();
+    return false;
+  }
+  if (plan.deadline.getTime() < new Date().getTime()) {
+    return false;
   }
   return true;
 };

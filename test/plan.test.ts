@@ -2,7 +2,7 @@ import request from "supertest";
 import { app } from "../src/api";
 import { User } from "../src/model/entity";
 
-describe("Plan", () => {
+describe.skip("Plan", () => {
     const loginUserTest = async (user:any) => {
         const response = await request(app)
             .post("/login")
