@@ -4,6 +4,7 @@ export interface Plan {
     title: string;
     description: string;
     deadline: Date;
+    programs: Program[];
 }
 
 type UserRole = "Admin" | "Representative" | "User";
@@ -21,4 +22,5 @@ export interface Program {
     title: string;
     description: string;
     deadline: Date;
+    userId: string;
 }

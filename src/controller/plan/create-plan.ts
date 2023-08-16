@@ -7,6 +7,7 @@ export const createPlan=(dto:{title:string,description?:string,deadline:Date}):P
         title:dto.title,
         description: dto.description || "",
         deadline: dto.deadline,
+        programs: [],
     };
     if(dto.deadline < new Date()){
         throw new httpError("deadline not valid",400)

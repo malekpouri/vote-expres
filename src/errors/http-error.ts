@@ -5,3 +5,14 @@ export class httpError extends Error {
         
     }
 }   
+export class ForbiddenError extends httpError {
+    constructor() {
+        super('Forbidden',403);
+    }
+}
+
+export class NotfoundError extends httpError {
+    constructor() {
+        super('Not Found',404);
+    }
+}

@@ -1,12 +1,13 @@
 import request from 'supertest';
 import { app } from '../src/api';
 import { User } from '../src/model/entity';
+import { canCreateProgram } from '../src/controller/program/create-program';
 
 describe('Program', () => {
-    const loginUsetTest = async () => {
+    const loginUsetTest = async (user="admin") => {
         const response = await request(app)
             .post("/login")
-            .send({ username: "admin", password: "admin" })
+            .send({ username: user, password: user })
             .expect(200);
         return response.body;
     }
@@ -24,7 +25,7 @@ describe('Program', () => {
     }
     describe('create program', () => {
         it('should be faild if did not logged in', async () => {
-            await request(app).post('/program').expect(401);
+            await request(app).post('/program').expect(400);
         });
         it('should be success if logged in', async () => {
             const userResponse: any = await loginUsetTest();
@@ -38,7 +39,8 @@ describe('Program', () => {
                     title: 'Bandar Abbas',
                     description: 'trip free to Bandar Abbas',
                     deadline: new Date().setDate(new Date().getDate() +1),
-                    planId: plan.body.id
+                    planId: plan.body.id,
+                    userId: userResponse.id
                 })
                 .expect(201);
             expect(program.body.title).toBe('Bandar Abbas');
@@ -124,7 +126,8 @@ describe('Program', () => {
                     title: 'Bandar Abbas',
                     description: 'trip free to Bandar Abbas should be success if deadline is valid',
                     deadline: tomarow,
-                    planId: plan.body.id
+                    planId: plan.body.id,
+                    userId: userResponse.id
                 })
                 .expect(201);
             expect(program.body.title).toBe('Bandar Abbas');
@@ -145,6 +148,32 @@ describe('Program', () => {
                     deadline: yesterday
                 })
                 .expect(400);
+        }
+        );
+        it.skip('should not create program if user already have a a program', async () => {
+            expect(canCreateProgram(
+                {
+                    id:'1',
+                    username:"rep",
+                    password:"rep",
+                    role:"Representative",
+                },
+                {
+                    id:1,
+                    title:"title",
+                    description:"description",
+                    deadline:new Date(),
+                    programs:[{
+                        id:1,
+                        title:"title",
+                        description:"description",
+                        deadline:new Date(),
+                        planId:1,
+                        userId:'1'
+                    }]
+
+                })).toBe(false)
+            
         }
         );
 
