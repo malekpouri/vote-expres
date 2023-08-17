@@ -4,27 +4,30 @@ import {
   NotfoundError,
   httpError,
 } from "../../errors/http-error";
-import { Plan, Program, User } from "../../model/entity";
+import { User } from "../../model/entity";
+import { Plan } from "../plan/model/plan";
+import { Program } from "./model/program";
 import { plans } from "../../routers/plan.route";
 import { programs } from "../../routers/program.route";
 import { CreateProgramDto } from "./dto/create-program-dto";
+import { PlanRepository } from "../plan/plan.repository";
 
-export const createProgram = (dto: CreateProgramDto, loggedUser: User) => {
-  const plan = plans.find((plan) => plan.id === dto.planId);
+export const createProgram = (
+  dto: CreateProgramDto,
+  loggedUser: User,
+  planRepo: PlanRepository
+) => {
+  const plan = planRepo.getById(dto.planId);
   if (!plan || plan === undefined) {
     throw new NotfoundError();
   }
   if (canCreateProgram(loggedUser, plan)) {
-    const program: Program = {
-      id: programs.length + 1,
+    planRepo.addProgram(plan, {
       title: dto.title,
       description: dto.description || "",
-      deadline: dto.deadline,
-      planId: plan.id,
       userId: loggedUser.id,
-    };
-    plan.programs.push(program);
-    return program;
+    });
+    return plan.programs[plan.programs.length - 1];
   } else {
     throw new httpError("you can not create program", 400);
   }

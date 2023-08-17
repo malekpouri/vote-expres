@@ -1,9 +1,10 @@
 import { httpError } from "../../errors/http-error";
-import { Plan } from "../../model/entity";
+import { Plan } from "./model/plan";
 import { plans } from "../../routers/plan.route";
-export const createPlan=(dto:{title:string,description?:string,deadline:Date}):Plan => {
-    const newPlan: Plan = {
-        id: plans.length + 1,
+import { CreatePlanDto } from "./dto/create-plan-dto";
+import { PlanRepository } from "./plan.repository";
+export const createPlan=(dto:CreatePlanDto,planRepo:PlanRepository) => {
+    const newPlan = {
         title:dto.title,
         description: dto.description || "",
         deadline: dto.deadline,
@@ -12,6 +13,7 @@ export const createPlan=(dto:{title:string,description?:string,deadline:Date}):P
     if(dto.deadline < new Date()){
         throw new httpError("deadline not valid",400)
     }
-    plans.push(newPlan);
+    // plans.push(newPlan);
+    planRepo.create(newPlan);
     return newPlan
 }

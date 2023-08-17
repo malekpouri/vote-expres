@@ -1,5 +1,4 @@
 import { Router } from "express";
-import { Plan } from "../model/entity";
 import { users } from "./login.route";
 import { createPlan } from "../controller/plan/create-plan";
 import { createPlanDto } from "../controller/plan/dto/create-plan-dto";
@@ -7,7 +6,7 @@ import { z } from "zod";
 import { handleExpress } from "../utility/handleExpress";
 import { getPlanById } from "../controller/plan/getplan-byId";
 import { loginMidalware } from "../utility/login.midalware";
-
+import { Plan } from "../controller/plan/model/plan"
 export const router = Router();
 
 export const plans: Plan[] = [];

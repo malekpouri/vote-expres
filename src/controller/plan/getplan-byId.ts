@@ -1,10 +1,11 @@
 import { httpError } from "../../errors/http-error";
-import { Plan } from "../../model/entity";
+import { Plan } from "./model/plan";
 import { plans } from "../../routers/plan.route";
+import { PlanRepository } from "./plan.repository";
 
 
-export const getPlanById = (id: number):Plan => {
-    const plan = plans.find((plan) => plan.id === id);
+export const getPlanById = (id: number,planRepo:PlanRepository):Plan => {
+    const plan = planRepo.getById(id);
 
     if (!plan || typeof plan === "undefined") {
         throw new httpError("Plan not found",404);
