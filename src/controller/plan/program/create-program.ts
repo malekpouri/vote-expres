@@ -1,22 +1,19 @@
-import { log } from "console";
 import {
   ForbiddenError,
   NotfoundError,
   httpError,
-} from "../../errors/http-error";
-import { User } from "../../model/entity";
-import { Plan } from "../plan/model/plan";
-import { Program } from "./model/program";
-import { plans } from "../../routers/plan.route";
-import { programs } from "../../routers/program.route";
+} from "../../../errors/http-error";
+import { User } from "../../../model/entity";
+import { Plan } from "../../plan/model/plan";
+import { PlanRepository } from "../../plan/plan.repository";
 import { CreateProgramDto } from "./dto/create-program-dto";
-import { PlanRepository } from "../plan/plan.repository";
+import { Program } from "./model/program";
 
 export const createProgram = (
   dto: CreateProgramDto,
   loggedUser: User,
   planRepo: PlanRepository
-) => {
+) :Program => {
   const plan = planRepo.getById(dto.planId);
   if (!plan || plan === undefined) {
     throw new NotfoundError();
@@ -25,6 +22,7 @@ export const createProgram = (
     planRepo.addProgram(plan, {
       title: dto.title,
       description: dto.description || "",
+      deadline: dto.deadline,
       userId: loggedUser.id,
     });
     return plan.programs[plan.programs.length - 1];

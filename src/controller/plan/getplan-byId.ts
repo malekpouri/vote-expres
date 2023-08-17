@@ -1,6 +1,5 @@
 import { httpError } from "../../errors/http-error";
 import { Plan } from "./model/plan";
-import { plans } from "../../routers/plan.route";
 import { PlanRepository } from "./plan.repository";
 
 
