@@ -1,5 +1,6 @@
 import { app } from "./api";
 import { User } from "./model/entity";
+import "reflect-metadata"
 
 const PORT = process.env.port || 3000;
 

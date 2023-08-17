@@ -15,7 +15,7 @@
   "devDependencies": {
     "@types/express": "^4.17.17",
     "@types/jest": "^29.5.3",
-    "@types/node": "^20.4.8",
+    "@types/node": "^20.5.0",
     "@types/supertest": "^2.0.12",
     "@types/uuid": "^9.0.2",
     "dotenv": "^16.3.1",
@@ -29,6 +29,9 @@
     "typescript": "^5.1.6"
   },
   "dependencies": {
+    "mysql2": "^3.6.0",
+    "reflect-metadata": "^0.1.13",
+    "typeorm": "^0.3.17",
     "uuid": "^9.0.0",
     "zod": "^3.22.0-canary.20230731T015307"
   }

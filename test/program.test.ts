@@ -1,8 +1,7 @@
 import request from 'supertest';
 import { app } from '../src/api';
 import { createPlanTest ,loginUserTest } from './utility';
-import { canCreateProgram } from '../src/controller/plan/program/create-program';
-import { log } from 'console';
+import { PlanService } from '../src/controller/plan/plan.service';
 
 describe('Program', () => {
 
@@ -141,7 +140,8 @@ describe('Program', () => {
         }
         );
         it('should not create program if user already have a a program', async () => {
-            expect(canCreateProgram(
+            const planSerrvice = new PlanService();
+            expect(planSerrvice.canCreateProgram(
                 {
                     id:'1',
                     username:"rep",
@@ -168,3 +168,7 @@ describe('Program', () => {
 
     });
 });
+function canCreateProgram(arg0: { id: string; username: string; password: string; role: string; }, arg1: { id: number; title: string; description: string; deadline: Date; programs: { id: number; title: string; description: string; deadline: Date; userId: string; }[]; }): any {
+    throw new Error('Function not implemented.');
+}
+

@@ -1,3 +1,4 @@
-import { PlanRepository } from "../controller/plan/plan.repository";
+import { PlanService } from "../controller/plan/plan.service";
 
-export const planrepository = new PlanRepository();
+
+export const planService = new PlanService();
