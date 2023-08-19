@@ -1,5 +1,8 @@
-import { Program } from "./program/model/program";
+import { Repository } from "typeorm";
+import { AppDataSource } from "../../utility/data-source";
+import { PlanEntity } from "./entity/plan.entity";
 import { Plan } from "./model/plan";
+import { Program } from "./program/model/program";
 
 export interface CreatePlan {
   title: string;
@@ -8,40 +11,32 @@ export interface CreatePlan {
   programs: Program[];
 }
 
-export interface CreateProgram{
-    title: string;
-    description: string;
-    deadline: Date;
-    userId: string;
+export interface CreateProgram {
+  title: string;
+  description: string;
+  deadline: Date;
+  userId: string;
 }
 
 export class PlanRepository {
-  private plans: Plan[] = [];
+  private planRepo: Repository<PlanEntity>;
 
-  private getNextId(): number {
-    return this.plans.length + 1;
-  }
-  public create(plan: CreatePlan) {
-    const createPlan={...plan,id:this.getNextId()}
-    this.plans.push(createPlan);
-    return createPlan;
+  constructor() {
+    this.planRepo = AppDataSource.getRepository(PlanEntity);
   }
 
-  public getById(id: number) {
-    const plan = this.plans.find((plan) => plan.id === id);
-
-    return plan;
+  public create(plan: CreatePlan): Promise<Plan> {
+    return this.planRepo.save(plan);
   }
 
-  public addProgram(plan:Plan, program: CreateProgram) {
-    plan.programs.push({
-        id: plan.programs.length + 1,
-        title: program.title,
-        description: program.description,
-        deadline: program.deadline,
-        planId: plan.id,
-        userId: program.userId,
-    })
+  public findById(id: number): Promise<Plan | null> {
+    return this.planRepo.findOne({ where: { id }, relations: ["programs"] });
   }
 
+  public addProgram(plan: Plan, program: CreateProgram): Promise<Plan> {
+    return this.planRepo.save({
+      ...plan,
+      programs: [...plan.programs, program],
+    });
+  }
 }

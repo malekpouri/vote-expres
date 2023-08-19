@@ -1,11 +1,11 @@
 import { httpError } from "../../errors/http-error"
 import { User } from "../../model/entity"
-import { users } from "../../routers/login.route"
+import { userService } from "../../utility/dependecy"
 
 
-export const login=(dto:{username:string,password:string}):User=>{
+export const login=async (dto:{username:string,password:string})=>{
 
-    const user= users.find(user=>user.username===dto.username && user.password===dto.password)
+    const user=await userService.login(dto)
     if(!user || user === undefined){                
         throw new httpError("User not found",401)
     }  

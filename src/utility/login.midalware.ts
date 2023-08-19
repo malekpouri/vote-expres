@@ -1,9 +1,15 @@
 import { NextFunction, Request ,Response } from "express"
-import { users } from "../routers/login.route";
+import { userService } from "./dependecy";
 
-export const loginMidalware= (req:Request,res:Response,next:NextFunction)=>{
+export const loginMidalware=async (req:Request,res:Response,next:NextFunction)=>{
     const userId = req.headers.authorization;
-    const loggedUser = users.find((user) => user.id === userId);
+    if (!userId || userId === undefined) {
+      res.status(401).send({ message: "unauthorized" });
+      return;
+    }
+    const loggedUser = await userService.findById(userId);
+    console.log("this is logged user: ", loggedUser);
+    
     if (!loggedUser || loggedUser === undefined) {
       res.status(401).send({ message: "unauthorized" });
       return;
