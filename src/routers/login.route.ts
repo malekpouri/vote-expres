@@ -1,11 +1,8 @@
 import { Router } from "express";
-import { v4 } from "uuid";
 import { z } from "zod";
 import { loginDto } from "../controller/login/dto/login-dto";
-import { login } from "../controller/login/login";
-import { User } from "../model/entity";
-import { handleExpress } from "../utility/handleExpress";
 import { userService } from "../utility/dependecy";
+import { handleExpress } from "../utility/handleExpress";
 
 export const router = Router();
 

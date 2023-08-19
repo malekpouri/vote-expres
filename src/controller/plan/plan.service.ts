@@ -34,7 +34,8 @@ export class PlanService {
       throw new httpError("deadline not valid", 400);
     }
     // plans.push(newPlan);
-    return this.planRepository.create(newPlan);
+    const newPlann=this.planRepository.create(newPlan)
+    return newPlann;
   };
   createProgram = async (
     dto: CreateProgramDto,

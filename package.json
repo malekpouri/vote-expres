@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "set NODE_ENV=Test && jest --detectOpenHandles --forceExit",
+    "test": "set NODE_ENV=Test && jest --detectOpenHandles ",
     "build": "rimraf dist && tsc",
     "start": "npm run build && node dist/index.js",
     "start:dev": "npx nodemon"

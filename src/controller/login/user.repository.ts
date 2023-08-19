@@ -14,7 +14,8 @@ export class UserRepository{
         return this.userRepo.findOneBy({username});
     }
 
-    findById(id: string){
-        return this.userRepo.findOneBy({ id});
+    async findById(id: string):Promise<User | null>{
+        const userByID=await this.userRepo.findOneBy({id});
+        return userByID;
     }
 }

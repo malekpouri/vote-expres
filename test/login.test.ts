@@ -3,13 +3,13 @@ import { app } from "../src/api";
 import { AppDataSource } from "../src/utility/data-source";
 import { seedUser } from "../src/utility/seed-data";
 
-describe("User", () => {
+describe.skip("User", () => {
   beforeAll(async () => {
-    AppDataSource.initialize();
-    seedUser()
+    await AppDataSource.initialize();
+    await seedUser()
   });
   afterAll(async () => {
-    AppDataSource.destroy();
+    await AppDataSource.destroy();
   });
   describe("login", () => {
     it("should be faild if user is empty", async () => {

@@ -13,9 +13,8 @@ if (process.env.NODE_ENV === "TEST") {
   });
 }
 
-
-app.use( loginRouter);
-app.use('/plan',planhadler)
+app.use(loginRouter);
+app.use(planhadler);
 
 app.use((err: any, req: any, res: any, next: any) => {
   if (err instanceof z.ZodError) {

@@ -10,7 +10,7 @@ export const router = Router();
 
 export const plans: Plan[] = [];
 
-router.post("/",loginMidalware, (req, res, next) => {
+router.post("/plan",loginMidalware, (req, res, next) => {
  
   if (req.user.role !== "Admin") {
     res.status(403).send({ message: "forbidden" });
@@ -22,11 +22,11 @@ router.post("/",loginMidalware, (req, res, next) => {
 
 
 });
-router.post("/:id/program",loginMidalware, (req, res, next) => {
+router.post("/plan/:id/program",loginMidalware, (req, res, next) => {
     const dto = createProgramDto.parse({...req.body,planId:z.coerce.number().parse(req.params.id)});
     handleExpress(res, () => planService.createProgram(dto, req.user));
 });
-router.get("/:id", (req, res, next) => {
+router.get("/plan/:id", (req, res, next) => {
     const userId = req.headers.authorization;
     if (!userId) {
       res.status(401).send({ message: "unauthorized" });
