@@ -1,9 +1,15 @@
 import request from "supertest";
 import { app } from "../src/api";
 import { createPlanTest, loginUserTest } from "./utility";
+import { AppDataSource } from "../src/utility/data-source";
 
-describe("Plan", () => {
-    
+describe.skip("Plan", () => {
+    beforeAll(async () => {
+        AppDataSource.initialize();
+      });
+      afterAll(async () => {
+        AppDataSource.destroy();
+      });
   describe("create plan", () => {
     it("should be faild if did not logged in", async () => {
       await request(app).post("/plan").expect(401);

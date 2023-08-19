@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest --detectOpenHandles --forceExit",
+    "test": "set NODE_ENV=Test && jest --detectOpenHandles --forceExit",
     "build": "rimraf dist && tsc",
     "start": "npm run build && node dist/index.js",
     "start:dev": "npx nodemon"
@@ -29,6 +29,8 @@
     "typescript": "^5.1.6"
   },
   "dependencies": {
+    "@types/dotenv-flow": "^3.2.0",
+    "dotenv-flow": "^3.2.0",
     "mysql2": "^3.6.0",
     "reflect-metadata": "^0.1.13",
     "typeorm": "^0.3.17",

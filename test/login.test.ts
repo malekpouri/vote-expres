@@ -1,7 +1,16 @@
 import request from "supertest";
 import { app } from "../src/api";
+import { AppDataSource } from "../src/utility/data-source";
+import { seedUser } from "../src/utility/seed-data";
 
 describe("User", () => {
+  beforeAll(async () => {
+    AppDataSource.initialize();
+    seedUser()
+  });
+  afterAll(async () => {
+    AppDataSource.destroy();
+  });
   describe("login", () => {
     it("should be faild if user is empty", async () => {
       await request(app)

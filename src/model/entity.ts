@@ -1,6 +1,6 @@
 
 
-type UserRole = "Admin" | "Representative" | "User";
+export type UserRole = "Admin" | "Representative" | "User";
 
 export interface User {
     id: string;

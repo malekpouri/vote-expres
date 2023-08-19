@@ -1,4 +1,4 @@
-import { Program } from "../../program/model/program";
+import { Program } from "../program/model/program";
 
 export interface Plan {
     id: number;
